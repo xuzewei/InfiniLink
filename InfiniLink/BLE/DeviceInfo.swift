@@ -67,7 +67,7 @@ struct DeviceInfoManager {
 		let deviceName = deviceNamer.getName(deviceUUID: uuid)
 		
 		if deviceName == "" {
-			BLEDeviceInfo.shared.deviceName = "InfiniTime"
+			BLEDeviceInfo.shared.deviceName = "健行健身"
 		} else {
 			BLEDeviceInfo.shared.deviceName = deviceName
 		}

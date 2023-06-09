@@ -10,6 +10,14 @@
 import CoreBluetooth
 import CoreData
 
+extension Date {
+   func getFormattedDate(format: String) -> String {
+        let dateformat = DateFormatter()
+        dateformat.dateFormat = format
+        return dateformat.string(from: self)
+    }
+}
+
 struct BLEUpdatedCharacteristicHandler {
 	
 	let bleManager = BLEManager.shared
@@ -29,6 +37,24 @@ struct BLEUpdatedCharacteristicHandler {
 			return (Int(byteArray[1]) << 8) + Int(byteArray[2])
 		}
 	}
+    
+    func callAPI(data: String) {
+        guard let url = URL(string: "https://jxjsservice.jxfit.cn/management2/heart_rate/insert"+data) else{
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url){
+            data, response, error in
+            
+            if let data = data, let string = String(data: data, encoding: .utf8){
+                print(string)
+            }
+        }
+
+        task.resume()
+    }
+    
+
 	
 	func handleUpdates(characteristic: CBCharacteristic, peripheral: CBPeripheral) {
 		switch characteristic.uuid {
@@ -40,6 +66,16 @@ struct BLEUpdatedCharacteristicHandler {
             bleManagerVal.heartBPM = Double(bpm)
 			if bpm != 0{
                 ChartManager.shared.addItem(dataPoint: DataPoint(date: Date(), value: Double(bpm), chart: ChartsAsInts.heart.rawValue))
+                
+                // Complete the func was send a value of heart rate to server.
+                // write by Xavi
+                
+                let date = Date()
+                let format = date.getFormattedDate(format: "yyyy-MM-dd HH:mm:ss")
+                let escapedString = format.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+                let data = "?services_no=1&record_time=\(escapedString!)&rate=\(Int(bpm))"
+                DebugLogManager.shared.debug(error: "heart rate value \(String(data))", log: .ble, date: Date())
+                callAPI(data: data)
 			}
 		case bleManagerVal.cbuuidList.bat:
 			guard let value = characteristic.value else {

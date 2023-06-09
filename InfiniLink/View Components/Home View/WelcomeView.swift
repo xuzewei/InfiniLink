@@ -16,7 +16,7 @@ struct WelcomeView: View {
         return VStack {
             if !bleManager.isConnectedToPinetime || deviceInfo.firmware == "" {
                 VStack(spacing: 5) {
-                    Text("InfiniLink")
+                    Text("健行健身")
                         .font(.system(size: 42))
                         .bold()
                         .padding(5)

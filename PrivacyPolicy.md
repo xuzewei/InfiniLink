@@ -38,6 +38,6 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 
 **Contact Us**
 If you have any questions about this Privacy Policy, You can contact us:
-- By visiting this page on our website: https://github.com/InfiniTimeOrg/InfiniLink
-- By sending us an email: xanm@emry.me
+- By visiting this page on our website: http://www.jxfit.cn
+- By sending us an email: xuzewei@jxfit.cn
 
